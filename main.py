@@ -3,7 +3,17 @@ import jinja2
 import os
 import random
 from google.appengine.api import users
+from google.appengine.ext import ndb
 import jinja2
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
+
+
+class Student(ndb.Model):
+    name = ndb.StringProperty(required=True)
+    story_input = ndb.TextProperty(required=True)
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__))
@@ -17,7 +27,37 @@ class MainHandler(webapp2.RequestHandler):
             greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
         self.response.out.write('%s'% greeting)
+<<<<<<< HEAD
         self.response.write(template.render())
+=======
+        # Get all of the student data from the datastore
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        # student_query = student_query.filter(Student.name == 'Adam')
+        student_data = student_query.fetch()
+        # Pass the data to the template
+        template_values = {
+            'students' : student_data
+        }
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
+    def post(self):
+        # Get the student name and university from the form
+        name = self.request.get('name')
+        story_input = self.request.get('story_input')
+        # lunchbox_instance = LunchBox(
+        # food = self.request.get('food'),
+        # drink = self.request.get('drink'),
+        # insulated = True)
+        # my_lunchbox_key = lunchbox_instance.put()
+        # Create a new Student and put it in the datastore
+        student = Student(name=name, story_input=story_input)
+        student.put()
+        # Redirect to the main handler that will render the template
+        self.redirect('/')
+
+
+>>>>>>> b8d4e8895a47878732f3568590ae2689972dc05b
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
