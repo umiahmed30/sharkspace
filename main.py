@@ -23,7 +23,8 @@ class FormHandler(webapp2.RequestHandler):
         schoolyear = self.request.get("schoolyear"," ")
         name = self.request.get("name"," ")
         school = self.request.get("school"," ")
-        pokemon = self.request.get('pokemon',"blank")
+
+
         response_string = ' '
 
         template = jinja_environment.get_template('form.html')
@@ -35,10 +36,20 @@ class FormHandler(webapp2.RequestHandler):
 
         name = self.request.get('name')
         schoolyear = self.request.get('schoolyear')
-        response_string = "Hi " + name 
+        java = self.request.get('java')
+        python = self.request.get('python')
+        HTML = self.request.get('HTML')
+        Javascript = self.request.get('Javascript')
+
+        CSS = self.request.get('CSS')
+        Cplus = self.request.get('Cplus')
+        Objective_C = self.request.get('Objective_C')
+        ruby = self.request.get('ruby')
+
+        response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
         template = jinja_environment.get_template('form.html')
 
-        template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
+        template_vars = {'name':name, 'schoolyear': schoolyear, 'java': java, 'response': response_string}
         self.response.out.write(template.render(template_vars))
 
 class MainHandler(webapp2.RequestHandler):
