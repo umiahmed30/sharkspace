@@ -10,7 +10,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-
+code = []
 class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
     story_input = ndb.TextProperty(required=True)
@@ -46,39 +46,54 @@ class FormHandler(webapp2.RequestHandler):
         Cplus = self.request.get('Cplus')
         Objective_C = self.request.get('Objective_C')
         ruby = self.request.get('ruby')
+        languages = []
+        languages.extend([java, python, HTML, Javascript, CSS, Cplus, Objective_C, ruby])
 
-        response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+        for language in languages:
+            if language != "":
+                code.append(language)
 
-        response_string = "Hi " + name
+        self.response.out.write(code)
+
+        # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+
+
 
         template = jinja_environment.get_template('form.html')
 
-        template_vars = {'name':name, 'schoolyear': schoolyear, 'java': java, 'response': response_string}
+        template_vars = {'name':name, 'schoolyear': schoolyear}
         self.response.out.write(template.render(template_vars))
 
 class MainHandler(webapp2.RequestHandler):
+    globvar = []
+
     def get(self):
         user = users.get_current_user()
+        globvar = code
         if user:
             greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         else:
             greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
         self.response.out.write('%s'% greeting)
+        template_vars = {'globvar': globvar}
+        self.response.out.write(template.render(template_vars))
 
-        self.response.write(template.render())
 
-        # Get all of the student data from the datastore
-        student_query = Student.query()
-        student_query = student_query.order(Student.name)
-        # student_query = student_query.filter(Student.name == 'Adam')
-        student_data = student_query.fetch()
-        # Pass the data to the template
-        template_values = {
-            'students' : student_data
-        }
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render(template_values))
+
+        # self.response.write(globvar)
+
+        # # Get all of the student data from the datastore
+        # student_query = Student.query()
+        # student_query = student_query.order(Student.name)
+        # # student_query = student_query.filter(Student.name == 'Adam')
+        # student_data = student_query.fetch()
+        # # Pass the data to the template
+        # template_values = {
+        #     'students' : student_data
+        # }
+        # template = JINJA_ENVIRONMENT.get_template('index.html')
+        # self.response.write(template.render(template_values))
     def post(self):
         # Get the student name and university from the form
         name = self.request.get('name')
