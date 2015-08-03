@@ -18,6 +18,29 @@ class Student(ndb.Model):
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__))
 )
+class FormHandler(webapp2.RequestHandler):
+    def get(self):
+        schoolyear = self.request.get("schoolyear"," ")
+        name = self.request.get("name"," ")
+        school = self.request.get("school"," ")
+        pokemon = self.request.get('pokemon',"blank")
+        response_string = ' '
+
+        template = jinja_environment.get_template('form.html')
+
+        template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
+        self.response.out.write(template.render(template_vars))
+
+    def post(self):
+
+        name = self.request.get('name')
+        schoolyear = self.request.get('schoolyear')
+        response_string = "Hi " + name 
+        template = jinja_environment.get_template('form.html')
+
+        template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
+        self.response.out.write(template.render(template_vars))
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
@@ -57,7 +80,12 @@ class MainHandler(webapp2.RequestHandler):
         self.redirect('/')
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0b09a60e29d96d1435d9999cd2dad71dd84289cc
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/form', FormHandler)
 ], debug=True)
