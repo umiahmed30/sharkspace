@@ -35,29 +35,55 @@
       <h1 class="name_and_image" id="name">Cassidy Haas</h1><br>
     <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
     <br>
-    <p><strong>University:</strong> University of Colorado</p>
-    <p><strong>Class:</strong> Class of 2015</p>
-    <!-- class like class of 2015, 16,  etc -->
-    <h3>Languages of Proficiency</h3>
-    <ul>
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>Javascript</li>
-      <li>Python</li>
-    </ul>
-    <h3>Technical Skills</h3>
-    <ul>
-      <li>Command Line</li>
-      <li>Google App Engine</li>
-    </ul>
+  <form action="/profile" method="POST">
+    Your Name: <input type="text" name="name">
+    <br>
+    <p> My College/ University: <input type="text" name ="school"> </p>
+    <p> Year in School:
+      <input type="checkbox" name="schoolyear" value="freshmen"> Freshmen
+      <input type="checkbox" name="schoolyear" value="sophmore"> Sophmore
+      <input type="checkbox" name="schoolyear" value="junior"> Junior
+      <input type="checkbox" name="schoolyear" value="senior"> Senior
+    </p>
+    <p>  Language(s)  : </p>
+      <input type="checkbox" name="java"> Java
+      <br>
+      <input type="checkbox" name="python"> Python
+      <br>
+      <input type="checkbox" name="html"> HTML
+      <br>
+      <input type="checkbox" name="javascript"> Javascript
+      <br>
+      <input type="checkbox" name="css"> CSS
+      <br>
+      <input type="checkbox" name="c+">C++
+      <br>
+      <input type="checkbox" name="obj"> Objective-C
+      <br>
+      <input type="checkbox" name="ruby">ruby
+     <br>
+    <p> Technical Skills </p>
+    Skill 1: <input type="type" name="skill1">
+    <br>
+    Skill 2: <input type="type" name="skill2">
+    <br>
+    Skill 3: <input type="type" name="skill3">
+    <br>
+    Skill 4: <input type="type" name="skill4">
+    <br>
 
-    </ul>
-    <h3>Technical Experience</h3>
-    <h5>(Internships, Hackathons, Completed Applications)</h5>
-    <ul>
-      <li>Attended Google NYC's Computer Science Institute</li>
-      <li> 2nd example </li>
-    </ul>
+    <p> Experience </p>
+    Activity 1:
+    <br>
+    Title
+    <input type="type" name="activty1">
+
+    <br>
+    <br>
+      <input type="submit">
+  </form>
+  {{response}}
+    
   </div>
   </body>
 </html>

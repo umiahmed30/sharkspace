@@ -6,6 +6,17 @@
 
 <h1>Customize my Profile</h1>
 
+
+<form action="/profile" method="POST">
+  First Name: <input type="text" name="name"> Last Name: <input type="text" name="name">
+  <br>
+  <p> My College/ University: <input type="text" name ="school"> </p>
+  <p> Year in School:
+    <input type="checkbox" name="schoolyear" value="freshmen"> Freshmen
+    <input type="checkbox" name="schoolyear" value="sophmore"> Sophmore
+    <input type="checkbox" name="schoolyear" value="junior"> Junior
+    <input type="checkbox" name="schoolyear" value="senior"> Senior
+
 <form action="/form" method="post">
   Your Name: <input type="text" name="name">
   <br>
@@ -15,6 +26,7 @@
     <input type="checkbox" name="schoolyear" value="Sophomore"> Sophmore
     <input type="checkbox" name="schoolyear" value="Junior"> Junior
     <input type="checkbox" name="schoolyear" value="Senior"> Senior
+
   </p>
   <p>  Language(s)  : </p>
     <input type="checkbox" name="java" value="java"> Java
