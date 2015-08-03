@@ -35,21 +35,30 @@ class FormHandler(webapp2.RequestHandler):
     def post(self):
 
         name = self.request.get('name')
+        school = self.request.get('school')
         schoolyear = self.request.get('schoolyear')
+        # skill = self.request.get('skill')
+        # activity = self.request.get('activity')
 
-        java = self.request.get('java')
-        python = self.request.get('python')
-        HTML = self.request.get('HTML')
-        Javascript = self.request.get('Javascript')
+        language = []
 
-        CSS = self.request.get('CSS')
-        Cplus = self.request.get('Cplus')
-        Objective_C = self.request.get('Objective_C')
-        ruby = self.request.get('ruby')
+        skill = []
 
-        response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+        activity = []
 
-        response_string = "Hi " + name
+        # java = self.request.get('java')
+        # python = self.request.get('python')
+        # HTML = self.request.get('HTML')
+        # Javascript = self.request.get('Javascript')
+        #
+        # CSS = self.request.get('CSS')
+        # Cplus = self.request.get('Cplus')
+        # Objective_C = self.request.get('Objective_C')
+        # ruby = self.request.get('ruby')
+
+        # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+        #
+        # response_string = "Hi " + name
 
         template = jinja_environment.get_template('form.html')
 
