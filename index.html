@@ -1,65 +1,25 @@
-<!-- profile page -->
 <!DOCTYPE html>
+{% autoescape true %}
 <html>
-  <head>
-    <title>Cassidy Haas's Profile</title>
-      <link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'>
-      <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-  </head>
   <body>
-    <!-- nav bar- My profile, messages, connections, search, dev team, coding references -->
-    <nav>
-  <ul>
-    <li class="header" id="logo">.sharkspace</li>
-    <li class="header">
-        <a href="/profile">My Profile</a>
-    </li>
-    <li class="header">
-        <a href="/dev_team">Dev Team</a>
-    </li>
-    <li class="header">
-        <a href="/messages">Messages</a>
-    </li>
-    <li class="header">
-        <a href="/resources">Coding Resources</a>
-    </li>
-    <li class="header">
-        <a href="/contacts">Contacts</a>
-    </li>
-  </ul><br>
-</nav>
-    <div id="main">
-    <img src="https://scontent-lga1-1.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/11800256_487812714719975_4745634633761389716_n.jpg?oh=77d05ae5b68f3cd0c0dacd3a8929fb5e&oe=56542341" id="profile_image" class="name_and_image">
-    <!-- float left- use a div tag to inline block with the users name -->
-    <!-- link to customize page -->
+    <h2>Student List</h2>
 
-      <h1 class="name_and_image" id="name">Cassidy Haas</h1><br>
-    <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
-    <!-- <a href="{{stack overflow}}">Stack Overflow</a> -->
-    <br>
-    <p><strong>University:</strong> University of Colorado</p>
-    <p><strong>Class:</strong> Class of 2015</p>
-    <!-- class like class of 2015, 16,  etc -->
-    <h3>Languages of Proficiency</h3>
-    <ul>
-      <li>HTML</li>
-      <li>CSS</li>
-      <li>Javascript</li>
-      <li>Python</li>
-    </ul>
-    <h3>Technical Skills</h3>
-    <ul>
-      <li>Command Line</li>
-      <li>Google App Engine</li>
-    </ul>
+    {% for student in students %}
+      {{ student.story_input }}
+    {% endfor %}
 
-    </ul>
-    <h3>Technical Experience</h3>
-    <h5>(Internships, Hackathons, Completed Applications)</h5>
-    <ul>
-      <li>Attended Google NYC's Computer Science Institute</li>
-      <li> 2nd example </li>
-    </ul>
-  </div>
+
+    <hr>
+
+    <form action="/" method="post">
+      <!-- <div>Name: <input name="name"></input></div> -->
+      <div>new addition: <input name="story_input" type="text"></input></div>
+      <!-- <div>Lunchbox: </div> -->
+      <!-- <div>food:<input name="food"></input></div>
+        <div>drink:<input name='drink'></input></div>
+        <div>Insulated?<input name= 'insulated'> </input>'</div> -->
+      <div><input type="submit" value="Add to story"></div>
+    </form>
   </body>
 </html>
+{% endautoescape %}
