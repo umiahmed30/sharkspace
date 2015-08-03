@@ -27,9 +27,9 @@ class MainHandler(webapp2.RequestHandler):
             greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
         self.response.out.write('%s'% greeting)
-<<<<<<< HEAD
+
         self.response.write(template.render())
-=======
+
         # Get all of the student data from the datastore
         student_query = Student.query()
         student_query = student_query.order(Student.name)
@@ -57,7 +57,6 @@ class MainHandler(webapp2.RequestHandler):
         self.redirect('/')
 
 
->>>>>>> b8d4e8895a47878732f3568590ae2689972dc05b
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
