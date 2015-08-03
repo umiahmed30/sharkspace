@@ -1,18 +1,20 @@
 import webapp2
+import jinja2
+import os
+import random
 from google.appengine.api import users
 import jinja2
 
-class MyHandler(webapp2.RequestHandler):
+class MainHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
         if user:
-            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
-                        (user.nickname(), users.create_logout_url('/')))
+            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         else:
-            greeting = ('<a href="%s">Sign in or register</a>.' %
-                        users.create_login_url('/'))
+            greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
+        self.response.out.write('%s'% greeting)
 
-        self.response.out.write("<html><body>%s</body></html>" % greeting)
-        self.response.write(template.render(template_vars))
 
-app = webapp2.WSGIApplication([('/', MyHandler),], debug=True)
+app = webapp2.WSGIApplication([
+    ('/', MainHandler)
+], debug=True)
