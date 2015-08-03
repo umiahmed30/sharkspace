@@ -6,15 +6,15 @@
 
 <h1>Customize my Profile</h1>
 
-<form action="/profile" method="POST">
+<form action="/form" method="post">
   Your Name: <input type="text" name="name">
   <br>
   <p> My College/ University: <input type="text" name ="school"> </p>
   <p> Year in School:
-    <input type="checkbox" name="freshmen"> Freshmen
-    <input type="checkbox" name="sophmore"> Sophmore
-    <input type="checkbox" name="junior"> Junior
-    <input type="checkbox" name="senior"> Senior
+    <input type="checkbox" name="schoolyear" value="Freshman"> Freshmen
+    <input type="checkbox" name="schoolyear" value="Sophomore"> Sophmore
+    <input type="checkbox" name="schoolyear" value="Junior"> Junior
+    <input type="checkbox" name="schoolyear" value="Senior"> Senior
   </p>
   <p>  Language(s)  : </p>
     <input type="checkbox" name="java"> Java
@@ -53,6 +53,6 @@
   <br>
     <input type="submit">
 </form>
-
+{{response}}
 </body>
 </html>
