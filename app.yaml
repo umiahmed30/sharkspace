@@ -1,4 +1,4 @@
-application: apiapp
+application: sharkspace
 version: 1
 runtime: python27
 api_version: 1
@@ -9,13 +9,21 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+<<<<<<< HEAD
 # -url: /style\.css
 #     static_files: style.css
 #     upload: style\.css
 
+=======
+>>>>>>> 62d1ab62dd7530cd249d5f29e887977294c59505
 - url: .*
   script: main.app
 
 libraries:
 - name: webapp2
   version: "2.5.2"
+<<<<<<< HEAD
+=======
+- name: jinja2
+  version: latest
+>>>>>>> 62d1ab62dd7530cd249d5f29e887977294c59505
