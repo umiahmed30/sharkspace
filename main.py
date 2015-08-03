@@ -1,5 +1,6 @@
 import webapp2
 from google.appengine.api import users
+import jinja2
 
 class MyHandler(webapp2.RequestHandler):
     def get(self):
@@ -12,5 +13,6 @@ class MyHandler(webapp2.RequestHandler):
                         users.create_login_url('/'))
 
         self.response.out.write("<html><body>%s</body></html>" % greeting)
+        self.response.write(template.render(template_vars))
 
-application = webapp2.WSGIApplication([('/', MyHandler),], debug=True)
+app = webapp2.WSGIApplication([('/', MyHandler),], debug=True)
