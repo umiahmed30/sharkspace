@@ -15,6 +15,7 @@ class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
     story_input = ndb.TextProperty(required=True)
 
+
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__))
 )
@@ -98,6 +99,7 @@ class MainHandler(webapp2.RequestHandler):
         # Get the student name and university from the form
         name = self.request.get('name')
         story_input = self.request.get('story_input')
+        student_keys = ndb.KeyProperty(kind='Student', repeated=True)
         # lunchbox_instance = LunchBox(
         # food = self.request.get('food'),
         # drink = self.request.get('drink'),
