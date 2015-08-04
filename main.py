@@ -40,33 +40,24 @@ class FormHandler(webapp2.RequestHandler):
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
-        language = []
 
-<<<<<<< HEAD
-        skill = []
 
-        activity = []
+        java = self.request.get('java')
+        Python = self.request.get('Python')
+        HTML = self.request.get('HTML')
+        Javascript = self.request.get('Javascript')
 
-        # java = self.request.get('java')
-        # python = self.request.get('python')
-        # HTML = self.request.get('HTML')
-        # Javascript = self.request.get('Javascript')
-        #
-        # CSS = self.request.get('CSS')
-        # Cplus = self.request.get('Cplus')
-        # Objective_C = self.request.get('Objective_C')
-        # ruby = self.request.get('ruby')
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
         #
         # response_string = "Hi " + name
-=======
+
         CSS = self.request.get('CSS')
         Cplus = self.request.get('Cplus')
         Objective_C = self.request.get('Objective_C')
         ruby = self.request.get('ruby')
         languages = []
-        languages.extend([java, python, HTML, Javascript, CSS, Cplus, Objective_C, ruby])
+        languages.extend([java, Python, HTML, Javascript, CSS, Cplus, Objective_C, ruby])
 
         for language in languages:
             if language != "":
@@ -77,7 +68,7 @@ class FormHandler(webapp2.RequestHandler):
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
 
->>>>>>> 3c82fc986f25fcaf3bbfed8555025327551835cf
+
 
         template = jinja_environment.get_template('form.html')
 
@@ -89,7 +80,8 @@ class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         user = users.get_current_user()
-        globvar = code
+
+        globvar = code 
         if user:
             greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         else:
