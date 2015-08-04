@@ -108,7 +108,7 @@ class FormHandler(webapp2.RequestHandler):
 
         template_vars = {'name':name, 'schoolyear': schoolyear}
         self.response.out.write(template.render(template_vars))
-        self.redirect('/')
+        self.redirect('/profile')
 
 class MainHandler(webapp2.RequestHandler):
     globvar = []
@@ -153,7 +153,7 @@ class MainHandler(webapp2.RequestHandler):
         # Create a new Student and put it in the datastore
 
         # Redirect to the main handler that will render the template
-        self.redirect('/')
+        self.redirect('/profile')
 # class SignIn(ndb.Model):
 #     password = ndb.StringProperty(required=True)
 #     username = ndb.StringProperty(required=True)
@@ -164,23 +164,40 @@ class UserPrefs(ndb.Model):
 
     # user = users.get_current_user()
 
+class SignInHandler(webapp2.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
 
+            if userprefs:
+                self.redirect('/profile')
+            else:
+                self.redirect('/form')
 
-class LoginHandler(webapp2.RequestHandler):
+class WelcomepageHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
 
         if user:
-            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
+            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/redirect')))
         else:
-            greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
+            greeting = ('<a href="%s">Sign in or Register</a>.'% users.create_login_url('/redirect'))
+
         template = jinja_environment.get_template('welcomepage.html')
         self.response.out.write('%s'% greeting)
+        self.response.out.write(template.render())
 
-        if user:
-            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
-            userprefs = q.get()
-            print userprefs
+        # if user:
+        #     q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+        #     userprefs = q.get()
+        #     if userprefs:
+        #         self.redirect('/profile')
+        #     else:
+        #         self.redirect('/form')
+
+
             # user_query = UserPrefs.query()
             # user_query = user_query.filter(UserPrefs.userid == user.user_id())
             # user_data = user_query.get()
@@ -248,7 +265,8 @@ class LoginHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
+    ('/profile', MainHandler),
     ('/form', FormHandler),
-    ('/welcomepage', LoginHandler)
+    ('/', WelcomepageHandler),
+    ('/redirect', SignInHandler)
 ], debug=True)
