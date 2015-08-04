@@ -13,6 +13,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 code = []
 name = []
 school = []
+schoolyear = []
 
 # class Student(ndb.Model):
 #     name = ndb.StringProperty(required=True)
@@ -24,7 +25,7 @@ jinja_environment = jinja2.Environment(
 )
 class FormHandler(webapp2.RequestHandler):
     def get(self):
-        schoolyear = self.request.get("schoolyear"," ")
+        # schoolyear = self.request.get("schoolyear"," ")
         # name = self.request.get("name"," ")
         # school = self.request.get("school"," ")
 
@@ -43,7 +44,8 @@ class FormHandler(webapp2.RequestHandler):
         # print name
         school.append(self.request.get('school'))
         self.response.out.write(school)
-        schoolyear = self.request.get('schoolyear')
+        schoolyear.append(self.request.get('schoolyear'))
+        self.response.out.write(schoolyear)
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
@@ -102,7 +104,12 @@ class MainHandler(webapp2.RequestHandler):
             schoolname = school[0]
         else:
             schoolname = ""
-        # print schoolname
+        year = ""
+        if len(schoolyear) > 0:
+            year = schoolyear[0]
+        else:
+            year = ""
+
 
 
 
@@ -112,7 +119,7 @@ class MainHandler(webapp2.RequestHandler):
             greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
         self.response.out.write('%s'% greeting)
-        template_vars = {'numero': numero, 'globvar': globvar, 'schoolname': schoolname}
+        template_vars = {'numero': numero, 'globvar': globvar, 'schoolname': schoolname, 'year': year}
         self.response.out.write(template.render(template_vars))
 
 
@@ -135,10 +142,10 @@ class MainHandler(webapp2.RequestHandler):
 
         # name = self.request.get('name')
         # story_input = self.request.get('story_input')
-
+        #
         name = self.request.get('name')
-        story_input = self.request.get('story_input')
-        student_keys = ndb.KeyProperty(kind='Student', repeated=True)
+        # story_input = self.request.get('story_input')
+        # student_keys = ndb.KeyProperty(kind='Student', repeated=True)
 
         # lunchbox_instance = LunchBox(
         # food = self.request.get('food'),
