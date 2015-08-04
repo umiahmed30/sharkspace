@@ -29,6 +29,7 @@ class Student(ndb.Model):
     Cplus=ndb.StringProperty(required=False)
     Objective_C=ndb.StringProperty(required=False)
     ruby =ndb.StringProperty(required=False)
+    ID = ndb.StringProperty(required=True)
 
     # language= ndb.StringProperty(required=True)
 
@@ -69,10 +70,11 @@ class FormHandler(webapp2.RequestHandler):
         Cplus=self.request.get('Cplus')
         Objective_C=self.request.get('Objective_C')
         ruby = self.request.get('ruby')
+
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
-        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby)
+        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id());
         student.put()
 
         java = self.request.get('java')
@@ -106,20 +108,21 @@ class FormHandler(webapp2.RequestHandler):
 
         template_vars = {'name':name, 'schoolyear': schoolyear}
         self.response.out.write(template.render(template_vars))
+        self.redirect('/')
 
 class MainHandler(webapp2.RequestHandler):
     globvar = []
     Stuff = [i.split() for i in globvar]
     newvar =  Stuff
     def get(self):
-        user = users.get_current_user()
+        # user = users.get_current_user()
         newvar = code
-        if user:
-            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
-        else:
-            greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
+        # if user:
+        #     greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
+        # else:
+        #     greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
-        self.response.out.write('%s'% greeting)
+        # self.response.out.write('%s'% greeting)
         template_vars = {'newvar': newvar}
         self.response.out.write(template.render(template_vars))
 
@@ -151,32 +154,94 @@ class MainHandler(webapp2.RequestHandler):
 
         # Redirect to the main handler that will render the template
         self.redirect('/')
-class SignIn(ndb.Model):
-    password = ndb.StringProperty(required=True)
-    username = ndb.StringProperty(required=True)
+# class SignIn(ndb.Model):
+#     password = ndb.StringProperty(required=True)
+#     username = ndb.StringProperty(required=True)
+
+class UserPrefs(ndb.Model):
+    userid = ndb.StringProperty()
+
+
+    # user = users.get_current_user()
 
 
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
-        signIn_query = SignIn.query()
-        signIn_data = signIn_query.fetch()
+        user = users.get_current_user()
 
+        if user:
+            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
+        else:
+            greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
+        template = jinja_environment.get_template('welcomepage.html')
+        self.response.out.write('%s'% greeting)
 
-        template_values = {
-            'signIn' : signIn_data
-        }
-        # template_values = {}
-        template = JINJA_ENVIRONMENT.get_template('login.html')
-        self.response.write(template.render(template_values))
+        if user:
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+            print userprefs
+            # user_query = UserPrefs.query()
+            # user_query = user_query.filter(UserPrefs.userid == user.user_id())
+            # user_data = user_query.get()
+
+            # greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+            #             (user.nickname(), users.create_logout_url('/')))
+        # else:
+        #     # greeting = ('<a href="%s">Sign in or register</a>.' %
+        #     #             users.create_login_url('/'))
+        #
+        # self.response.out.write('<html><body>%s</body></html>' % greeting)
+
+        # signIn_query = SignIn.query()
+        # signIn_data = signIn_query.fetch()
+        #
+        #
+        # template_values = {
+        #     'signIn' : signIn_data
+        # }
+        # # template_values = {}
+        # template = JINJA_ENVIRONMENT.get_template('login.html')
+        # self.response.write(template.render(template_values))
+        # self.redirect('/login')
     def post(self):
-        password= self.request.get('password')
-        username= self.request.get('username')
-        signIn=SignIn(password=password, username=username)
-        signIn.put()
-
-        template = JINJA_ENVIRONMENT.get_template('login.html')
-        self.response.write(template.render())
+        # password= self.request.get('password')
+        # username= self.request.get('username')
+        # signIn=SignIn(password=password, username=username)
+        # signIn.put()
+        #
+        # template = JINJA_ENVIRONMENT.get_template('login.html')
+        # self.response.write(template.render())
+        # user = raw_input('Create Username: ')
+        # password = raw_input('Create Password: ')
+        # store = dict()
+        # store[user]= password
+        # while True:
+        #     userguess=""
+        #     passwordguess=""
+        #     key=""
+        #     while (userguess != user) or (passwordguess != password):
+        #         userguess = raw_input('User Name: ')
+        #         passwordguess = raw_input('Password:')
+        # while( userguess in store and store[userguess] == passwordguess):
+        #     print 'try again'
+        #     if user in store_user:
+        #         print "That user already exists"
+        #     else:
+        #         store_user.append(user)
+        #         store_pass.append(password)
+        #
+        #
+        #
+        #
+        #
+        #     print "Welcome,",user, ". Type Lock to Lock or Type Create to create another user."
+        #     print store_user
+        #     print store_pass
+        #
+        #     while key != "lock":
+        #         key = raw_input("")
+        self.redirect('/form')
 
 
 
@@ -185,5 +250,5 @@ class LoginHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/form', FormHandler),
-    ('/login', LoginHandler)
+    ('/welcomepage', LoginHandler)
 ], debug=True)
