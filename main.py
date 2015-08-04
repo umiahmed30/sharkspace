@@ -151,11 +151,39 @@ class MainHandler(webapp2.RequestHandler):
 
         # Redirect to the main handler that will render the template
         self.redirect('/')
+class SignIn(ndb.Model):
+    password = ndb.StringProperty(required=True)
+    username = ndb.StringProperty(required=True)
+
+
+
+class LoginHandler(webapp2.RequestHandler):
+    def get(self):
+        signIn_query = SignIn.query()
+        signIn_data = signIn_query.fetch()
+
+
+        template_values = {
+            'signIn' : signIn_data
+        }
+        # template_values = {}
+        template = JINJA_ENVIRONMENT.get_template('login.html')
+        self.response.write(template.render(template_values))
+    def post(self):
+        password= self.request.get('password')
+        username= self.request.get('username')
+        signIn=SignIn(password=password, username=username)
+        signIn.put()
+
+        template = JINJA_ENVIRONMENT.get_template('login.html')
+        self.response.write(template.render())
+
 
 
 
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/form', FormHandler)
+    ('/form', FormHandler),
+    ('/login', LoginHandler)
 ], debug=True)
