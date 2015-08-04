@@ -25,7 +25,13 @@ jinja_environment = jinja2.Environment(
 )
 class FormHandler(webapp2.RequestHandler):
     def get(self):
+
         # schoolyear = self.request.get("schoolyear"," ")
+
+        new_student = Student(name=name, content=story_input)
+        student_key = new_student.put()
+        schoolyear = self.request.get("schoolyear"," ")
+
         # name = self.request.get("name"," ")
         # school = self.request.get("school"," ")
 
@@ -99,6 +105,7 @@ class MainHandler(webapp2.RequestHandler):
         else:
             numero = ""
         globvar = code
+
         schoolname = ""
         if len(school) > 0:
             schoolname = school[0]
@@ -109,6 +116,7 @@ class MainHandler(webapp2.RequestHandler):
             year = schoolyear[0]
         else:
             year = ""
+
 
 
 
