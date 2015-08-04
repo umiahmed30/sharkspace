@@ -259,6 +259,16 @@ class WelcomepageHandler(webapp2.RequestHandler):
         #     while key != "lock":
         #         key = raw_input("")
         self.redirect('/form')
+class ReferenceHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template('references.html')
+        self.response.out.write(template.render())
+class DevTeamHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template('devteam.html')
+        self.response.out.write(template.render())
+
+
 
 
 
@@ -268,5 +278,7 @@ app = webapp2.WSGIApplication([
     ('/profile', MainHandler),
     ('/form', FormHandler),
     ('/', WelcomepageHandler),
-    ('/redirect', SignInHandler)
+    ('/redirect', SignInHandler),
+    ('/references', ReferenceHandler),
+    ('/devteam', DevTeamHandler)
 ], debug=True)
