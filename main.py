@@ -11,6 +11,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 code = []
+
 class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
     story_input = ndb.TextProperty(required=True)
@@ -61,9 +62,10 @@ class FormHandler(webapp2.RequestHandler):
 
         for language in languages:
             if language != "":
-                code.append(language)
+                code.append(str(language))
+        for c in code:
+            self.response.out.write(c)
 
-        self.response.out.write(code)
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
@@ -78,10 +80,15 @@ class FormHandler(webapp2.RequestHandler):
 class MainHandler(webapp2.RequestHandler):
     globvar = []
 
+
     def get(self):
         user = users.get_current_user()
 
-        globvar = code 
+        globvar = code
+        
+
+        # for i in globvar:
+        #     globvar.append(i.split('\t')[0])
         if user:
             greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         else:

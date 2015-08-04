@@ -35,7 +35,9 @@
       <h1 class="name_and_image" id="name">Cassidy Haas</h1><br>
     <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
     <br>
-  {{globvar}}
+    {% for g in globvar%}
+  {{g}}
+  {% endfor %}
   </div>
   </body>
 </html>
