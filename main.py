@@ -11,10 +11,17 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 code = []
-
 class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
-    story_input = ndb.TextProperty(required=True)
+    school=ndb.StringProperty(required=True)
+    schoolyear=ndb.StringProperty(required=False)
+    skill1=ndb.TextProperty(required=True)
+    skill2=ndb.TextProperty(required=True)
+    skill3=ndb.TextProperty(required=True)
+    skill4=ndb.TextProperty(required=True)
+
+    # language= ndb.StringProperty(required=True)
+
 
 
 jinja_environment = jinja2.Environment(
@@ -39,10 +46,15 @@ class FormHandler(webapp2.RequestHandler):
         name = self.request.get('name')
         school = self.request.get('school')
         schoolyear = self.request.get('schoolyear')
+        skill1 = self.request.get('skill1')
+        skill2 = self.request.get('skill2')
+        skill3 = self.request.get('skill3')
+        skill4 = self.request.get('skill4')
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
-
+        student=Student(name=name, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4)
+        student.put()
 
         java = self.request.get('java')
         Python = self.request.get('Python')
@@ -63,9 +75,7 @@ class FormHandler(webapp2.RequestHandler):
 
         for language in languages:
             if language != "":
-                code.append(str(language))
-        for c in code:
-            self.response.out.write(c)
+                code.append(language)
 
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
@@ -80,23 +90,18 @@ class FormHandler(webapp2.RequestHandler):
 
 class MainHandler(webapp2.RequestHandler):
     globvar = []
-
-
+    Stuff = [i.split() for i in globvar]
+    newvar =  Stuff
     def get(self):
         user = users.get_current_user()
-
-        globvar = code
-        
-
-        # for i in globvar:
-        #     globvar.append(i.split('\t')[0])
+        newvar = code
         if user:
             greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         else:
             greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
         template = jinja_environment.get_template('index.html')
         self.response.out.write('%s'% greeting)
-        template_vars = {'globvar': globvar}
+        template_vars = {'newvar': newvar}
         self.response.out.write(template.render(template_vars))
 
 
@@ -118,7 +123,6 @@ class MainHandler(webapp2.RequestHandler):
         # Get the student name and university from the form
         name = self.request.get('name')
         story_input = self.request.get('story_input')
-        student_keys = ndb.KeyProperty(kind='Student', repeated=True)
         # lunchbox_instance = LunchBox(
         # food = self.request.get('food'),
         # drink = self.request.get('drink'),
