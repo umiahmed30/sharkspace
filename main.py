@@ -22,6 +22,8 @@ jinja_environment = jinja2.Environment(
 )
 class FormHandler(webapp2.RequestHandler):
     def get(self):
+        new_student = Student(name=name, content=story_input)
+        student_key = new_student.put()
         schoolyear = self.request.get("schoolyear"," ")
         name = self.request.get("name"," ")
         school = self.request.get("school"," ")
@@ -86,7 +88,7 @@ class MainHandler(webapp2.RequestHandler):
         user = users.get_current_user()
 
         globvar = code
-        
+
 
         # for i in globvar:
         #     globvar.append(i.split('\t')[0])
