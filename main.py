@@ -137,7 +137,7 @@ class FormHandler(webapp2.RequestHandler):
         # template = jinja_environment.get_template('form.html')
         # template_vars = {'name':name, 'schoolyear': schoolyear}
         # self.response.out.write(template.render(template_vars))
-        self.redirect('/profile')
+        self.redirect('/submit')
 
 class MainHandler(webapp2.RequestHandler):
     globvar = []
