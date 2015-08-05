@@ -5,12 +5,14 @@ import random
 from google.appengine.api import users
 from google.appengine.ext import ndb
 import jinja2
+import logging
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
 code = []
+name = []
 
 class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
@@ -30,6 +32,7 @@ class Student(ndb.Model):
     Objective_C=ndb.StringProperty(required=False)
     ruby =ndb.StringProperty(required=False)
     ID = ndb.StringProperty(required=True)
+    user = ndb.UserProperty(required=True)
 
     # language= ndb.StringProperty(required=True)
 
@@ -71,11 +74,12 @@ class FormHandler(webapp2.RequestHandler):
         Cplus=self.request.get('Cplus')
         Objective_C=self.request.get('Objective_C')
         ruby = self.request.get('ruby')
+        # user = users.get_current_user()
 
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
-        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id());
+        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user());
         student.put()
 
         java = self.request.get('java')
@@ -115,9 +119,11 @@ class MainHandler(webapp2.RequestHandler):
     globvar = []
     Stuff = [i.split() for i in globvar]
     newvar =  Stuff
+
     def get(self):
         # user = users.get_current_user()
         newvar = code
+        globvar = name
         # if user:
         #     greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         # else:
@@ -134,29 +140,34 @@ class MainHandler(webapp2.RequestHandler):
         else:
             greeting = ('<a href="%s">Sign in or register</a>.' %
                         users.create_login_url('/'))
-        template = jinja_environment.get_template('index.html')
+        # template = jinja_environment.get_template('index.html')
         self.response.out.write("<html><body>%s</body></html>" % greeting)
-        self.response.out.write(template.render())
-
+        # self.response.out.write(template.render())
+        # print user.user_id()
 
 
         # self.response.write(globvar)
 
         # # Get all of the student data from the datastore
-        # student_query = Student.query()
-        # student_query = student_query.order(Student.name)
-        # # student_query = student_query.filter(Student.name == 'Adam')
-        # student_data = student_query.fetch()
-        # # Pass the data to the template
-        # template_values = {
-        #     'students' : student_data
-        # }
-        # template = JINJA_ENVIRONMENT.get_template('index.html')
-        # self.response.write(template.render(template_values))
+        print 'umi {}'.format(user.user_id())
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        student_query = student_query.filter(Student.user == user )
+        student_data = student_query.fetch()
+        logging.info(student_data)
+
+        # Pass the data to the template
+        template_values = {
+            'students' : student_data
+        }
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
     def post(self):
         # Get the student name and university from the form
         name = self.request.get('name')
         story_input = self.request.get('story_input')
+        student=Student(globvar=globvar)
+        student.put()
         # lunchbox_instance = LunchBox(
         # food = self.request.get('food'),
         # drink = self.request.get('drink'),
