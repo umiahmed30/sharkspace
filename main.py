@@ -147,32 +147,30 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
         if user:
-            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
                         (user.nickname(), users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
         else:
-            greeting = ('<a href="%s">Sign in or register</a>.' %
+            greeting = ('<p style="color:goldenrod;"><strong><a href="%s">Sign in or register</a>.</strong></p>' %
                         users.create_login_url('/'))
         # template = jinja_environment.get_template('index.html')
         self.response.out.write("<html><body>%s</body></html>" % greeting)
 
-        # user = users.get_current_user()
-        #
-        # newvar = code
-        # globvar = name
 
-        # newvar = code
 
-        # if user:
-        #     greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
-        # else:
-        #     greeting = ('<a href ="%s">Sign in or Register</a>.'% users.create_login_url('/'))
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        student_query = student_query.filter(Student.user == user )
+        student_data = student_query.fetch()
+        logging.info(student_data)
 
-        template = jinja_environment.get_template('index.html')
-        # self.response.out.write('%s'% greeting)
-        # template_vars = {'newvar': newvar}
-        self.response.out.write(template.render())
+        # Pass the data to the template
+        template_values = {
+            'student' : student_data[0]
+        }
+        template = JINJA_ENVIRONMENT.get_template('index.html')
+        self.response.write(template.render(template_values))
         # self.response.write(globvar)
 
     def post(self):
@@ -216,12 +214,12 @@ class MainHandler(webapp2.RequestHandler):
         }
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
-    def post(self):
-        # Get the student name and university from the form
-        name = self.request.get('name')
-        story_input = self.request.get('story_input')
-        student=Student(globvar=globvar)
-        student.put()
+    # def post(self):
+    #     # Get the student name and university from the form
+    #     name = self.request.get('name')
+    #     story_input = self.request.get('story_input')
+    #     student=Student(globvar=globvar)
+    #     student.put()
 
         # student_query = Student.query()
         # student_query = student_query.order(Student.name)
@@ -287,7 +285,7 @@ class WelcomepageHandler(webapp2.RequestHandler):
 
         if user:
             print "logged in"
-            greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s!(<a href="%s"style= "color:goldenrod;">sign out</a>)</strong></p>'%(user.nickname(),users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
             if userprefs:
@@ -298,7 +296,7 @@ class WelcomepageHandler(webapp2.RequestHandler):
                 self.redirect('/form')
         else:
             print "not logged in"
-            greeting = ('<a href="%s">Sign in or Register</a>.'% users.create_login_url('/redirect'))
+            greeting = ('<a href="%s" style="color:goldenrod;">Sign in or Register</a>.'% users.create_login_url('/redirect'))
 
 
         template = jinja_environment.get_template('welcomepage.html')
@@ -375,11 +373,33 @@ class WelcomepageHandler(webapp2.RequestHandler):
 
 class ReferenceHandler(webapp2.RequestHandler):
     def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
+                        (user.nickname(), users.create_logout_url('/')))
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+        else:
+            greeting = ('<p style="color:goldenrod;"><strong><a href="%s">Sign in or register</a>.</strong></p>' %
+                        users.create_login_url('/'))
+        # template = jinja_environment.get_template('index.html')
+        self.response.out.write("<html><body>%s</body></html>" % greeting)
         template = jinja_environment.get_template('references.html')
         self.response.out.write(template.render())
 
 class DevTeamHandler(webapp2.RequestHandler):
     def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
+                        (user.nickname(), users.create_logout_url('/')))
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+        else:
+            greeting = ('<p style="color:goldenrod;"><strong><a href="%s">Sign in or register</a>.</strong></p>' %
+                        users.create_login_url('/'))
+        # template = jinja_environment.get_template('index.html')
+        self.response.out.write("<html><body>%s</body></html>" % greeting)
         template = jinja_environment.get_template('devteam.html')
         self.response.out.write(template.render())
 class SubmitHandler(webapp2.RequestHandler):

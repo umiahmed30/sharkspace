@@ -1,5 +1,5 @@
-#main {
-  background-color:white;
+div {
+  background:white;
   margin-left:150px;
   margin-right:150px;
   padding:10px;
@@ -9,7 +9,11 @@
 }
 
 html {
-  background-color:teal;
+  background:url("http://static.tumblr.com/29718091df19ee4fcb70ada4867023a2/7buo0fk/rRbmo5kye/tumblr_static_5035f24fe744f97d8d000001.jpg");
+  background-size:cover;
+  background-position:center center;
+  background-repeat: no-repeat;
+  background-attachment:fixed;
   font-family: 'Crimson Text', serif;
 }
 
