@@ -43,18 +43,18 @@ jinja_environment = jinja2.Environment(
 )
 class FormHandler(webapp2.RequestHandler):
     def get(self):
-        print "hello"
-        schoolyear = self.request.get("schoolyear"," ")
-        name = self.request.get("name"," ")
-        school = self.request.get("school"," ")
+        # print "hello"
+        # schoolyear = self.request.get("schoolyear"," ")
+        # name = self.request.get("name"," ")
+        # school = self.request.get("school"," ")
 
 
         response_string = ' '
 
         template = jinja_environment.get_template('form.html')
 
-        template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
-        self.response.out.write(template.render(template_vars))
+        # template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
+        self.response.out.write(template.render())
 
     def post(self):
 
@@ -82,26 +82,26 @@ class FormHandler(webapp2.RequestHandler):
         student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user());
         student.put()
 
-        java = self.request.get('java')
-        Python = self.request.get('Python')
-        HTML = self.request.get('HTML')
-        Javascript = self.request.get('Javascript')
-
-
-        # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+        # java = self.request.get('java')
+        # Python = self.request.get('Python')
+        # HTML = self.request.get('HTML')
+        # Javascript = self.request.get('Javascript')
         #
-        # response_string = "Hi " + name
-
-        CSS = self.request.get('CSS')
-        Cplus = self.request.get('Cplus')
-        Objective_C = self.request.get('Objective_C')
-        ruby = self.request.get('ruby')
-        languages = []
-        languages.extend([java, Python, HTML, Javascript, CSS, Cplus, Objective_C, ruby])
-
-        for language in languages:
-            if language != "":
-                code.append(language)
+        #
+        # # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
+        # #
+        # # response_string = "Hi " + name
+        #
+        # CSS = self.request.get('CSS')
+        # Cplus = self.request.get('Cplus')
+        # Objective_C = self.request.get('Objective_C')
+        # ruby = self.request.get('ruby')
+        # # languages = []
+        # languages.extend([java, Python, HTML, Javascript, CSS, Cplus, Objective_C, ruby])
+        #
+        # for language in languages:
+        #     if language != "":
+        #         code.append(language)
 
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
@@ -122,8 +122,12 @@ class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         # user = users.get_current_user()
+
         newvar = code
         globvar = name
+
+        # newvar = code
+
         # if user:
         #     greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
         # else:
@@ -149,6 +153,7 @@ class MainHandler(webapp2.RequestHandler):
         # self.response.write(globvar)
 
         # # Get all of the student data from the datastore
+
         print 'umi {}'.format(user.user_id())
         student_query = Student.query()
         student_query = student_query.order(Student.name)
@@ -168,6 +173,22 @@ class MainHandler(webapp2.RequestHandler):
         story_input = self.request.get('story_input')
         student=Student(globvar=globvar)
         student.put()
+
+        # student_query = Student.query()
+        # student_query = student_query.order(Student.name)
+        # # student_query = student_query.filter(Student.name == 'Adam')
+        # student_data = student_query.fetch()
+        # # Pass the data to the template
+        # template_values = {
+        #     'students' : student_data
+        # }
+        # template = JINJA_ENVIRONMENT.get_template('index.html')
+        # self.response.write(template.render(template_values))
+    # def post(self):
+        # Get the student name and university from the form
+        # name = self.request.get('name')
+        # story_input = self.request.get('story_input')
+
         # lunchbox_instance = LunchBox(
         # food = self.request.get('food'),
         # drink = self.request.get('drink'),
@@ -176,7 +197,7 @@ class MainHandler(webapp2.RequestHandler):
         # Create a new Student and put it in the datastore
 
         # Redirect to the main handler that will render the template
-        self.redirect('/profile')
+        # self.redirect('/profile')
 # class SignIn(ndb.Model):
 #     password = ndb.StringProperty(required=True)
 #     username = ndb.StringProperty(required=True)
