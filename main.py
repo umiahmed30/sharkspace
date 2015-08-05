@@ -31,10 +31,10 @@ class Student(ndb.Model):
     Cplus = ndb.StringProperty(required=False)
     Objective_C = ndb.StringProperty(required=False)
     ruby = ndb.StringProperty(required=False)
-    otherlang = ndb.StringProperty(required=True)
+    otherlang = ndb.StringProperty(required=False)
     ID = ndb.StringProperty(required=True)
 
-    profilepic =ndb.BlobProperty(required=True)
+    profilepic =ndb.BlobProperty(required=False)
 
     user = ndb.UserProperty(required=True)
 
@@ -61,8 +61,8 @@ class FormHandler(webapp2.RequestHandler):
         response_string = ' '
         template = jinja_environment.get_template('form.html')
 
-        template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
-        self.response.out.write(template.render(template_vars))
+        # template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
+        # self.response.out.write(template.render(template_vars))
 
         # template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
         self.response.out.write(template.render())
@@ -99,15 +99,15 @@ class FormHandler(webapp2.RequestHandler):
         # activity = self.request.get('activity')
 
 
-        student=Student(name=name,password=password,school=school,schoolyear=schoolyear,skill1=skill1,skill2=skill2,skill3=skill3,skill4=skill4,java=java,Python=Python,HTML=HTML,Javascript=Javascript,CSS=CSS, Cplus=Cplus,Objective_C=Objective_C,ruby=ruby,ID=users.get_current_user().user_id(),
-        profilepic=profilepic);
-
-        student.put()
+        # student=Student(name=name,password=password,school=school,schoolyear=schoolyear,skill1=skill1,skill2=skill2,skill3=skill3,skill4=skill4,java=java,Python=Python,HTML=HTML,Javascript=Javascript,CSS=CSS, Cplus=Cplus,Objective_C=Objective_C,ruby=ruby,ID=users.get_current_user().user_id(),
+        # profilepic=profilepic);
+        #
+        # student.put()
 
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
-        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user());
+        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user(), profilepic=profilepic, otherlang=otherlang );
         student.put()
 
         # java = self.request.get('java')
@@ -134,9 +134,9 @@ class FormHandler(webapp2.RequestHandler):
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
-        template = jinja_environment.get_template('form.html')
-        template_vars = {'name':name, 'schoolyear': schoolyear}
-        self.response.out.write(template.render(template_vars))
+        # template = jinja_environment.get_template('form.html')
+        # template_vars = {'name':name, 'schoolyear': schoolyear}
+        # self.response.out.write(template.render(template_vars))
         self.redirect('/profile')
 
 class MainHandler(webapp2.RequestHandler):
@@ -145,11 +145,22 @@ class MainHandler(webapp2.RequestHandler):
     newvar =  Stuff
 
     def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+                        (user.nickname(), users.create_logout_url('/')))
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+        else:
+            greeting = ('<a href="%s">Sign in or register</a>.' %
+                        users.create_login_url('/'))
+        # template = jinja_environment.get_template('index.html')
+        self.response.out.write("<html><body>%s</body></html>" % greeting)
 
         # user = users.get_current_user()
-
-        newvar = code
-        globvar = name
+        #
+        # newvar = code
+        # globvar = name
 
         # newvar = code
 
@@ -160,8 +171,8 @@ class MainHandler(webapp2.RequestHandler):
 
         template = jinja_environment.get_template('index.html')
         # self.response.out.write('%s'% greeting)
-        template_vars = {'newvar': newvar}
-        self.response.out.write(template.render(template_vars))
+        # template_vars = {'newvar': newvar}
+        self.response.out.write(template.render())
         # self.response.write(globvar)
 
     def post(self):
@@ -275,14 +286,18 @@ class WelcomepageHandler(webapp2.RequestHandler):
         user = users.get_current_user()
 
         if user:
+            print "logged in"
             greeting = ('Welcome, %s!(<a href="%s">sign out</a>)'%(user.nickname(),users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
             if userprefs:
+                print 'userprefs'
                 self.redirect('/profile')
             else:
+                print 'no userprefs'
                 self.redirect('/form')
         else:
+            print "not logged in"
             greeting = ('<a href="%s">Sign in or Register</a>.'% users.create_login_url('/redirect'))
 
 
@@ -367,7 +382,10 @@ class DevTeamHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('devteam.html')
         self.response.out.write(template.render())
-
+class SubmitHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template('submit.html')
+        self.response.out.write(template.render())
 
 
 
@@ -380,5 +398,6 @@ app = webapp2.WSGIApplication([
     ('/', WelcomepageHandler),
     ('/redirect', SignInHandler),
     ('/references', ReferenceHandler),
-    ('/devteam', DevTeamHandler)
+    ('/devteam', DevTeamHandler),
+    ('/submit', SubmitHandler)
 ], debug=True)
