@@ -1,0 +1,93 @@
+#main {
+  background-color:white;
+  margin-left:150px;
+  margin-right:150px;
+  padding:10px;
+  box-shadow: 0px 0px 5px 5px teal;
+  border-radius:10px;
+
+}
+
+html {
+  background-color:teal;
+  font-family: 'Crimson Text', serif;
+}
+
+#profile_image {
+  height:200px;
+  width:200px;
+}
+
+.name_and_image {
+  display:inline-block;
+  font-weight:bold;
+  font-size:50px;
+  text-align:center;
+
+}
+
+img{
+  margin-left:10px;
+  margin-top:10px;
+}
+
+#github {
+  padding:5px;
+  border:2px solid black;
+  color:black;
+  margin-left:5px;
+}
+
+.header {
+  display:inline-block;
+  margin-right:30px;
+  text-align:center center;
+  font-size:125%;
+}
+
+nav {
+  background-color:white;
+  height:40px;
+  margin-top:30px;
+  margin-bottom:30px;
+  box-shadow: 0px 0px 5px 5px teal;
+  /*padding-top:1px;*/
+  padding-bottom:20px;
+  margin-left:100px;
+  margin-right:100px;
+  border-radius:10px;
+}
+
+#logo {
+  font-size:30px;
+  color:turquoise;
+  padding:5px;
+  border: solid black 4px;
+  barder-radius:10px;
+}
+
+a {
+  color:black;
+  font-family: 'Crimson Text', serif;
+}
+
+li {
+  list-style-type:none;
+}
+
+h3 {
+  margin-top:0px;
+  margin-bottom:0px;
+  padding:0px;
+}
+
+#name {
+  border:2px solid black;
+  padding-top:4px;
+  padding-bottom:4px;
+  padding-left:10px;
+  padding-right:10px;
+  width:300px;
+  margin-left:auto;
+  margin:right:auto;
+}
