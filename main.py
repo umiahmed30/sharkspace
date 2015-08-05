@@ -14,26 +14,25 @@ code = []
 
 class Student(ndb.Model):
     name = ndb.StringProperty(required=True)
-    password= ndb.StringProperty(required=True)
-    school=ndb.StringProperty(required=True)
-    schoolyear=ndb.StringProperty(required=False)
-    skill1=ndb.TextProperty(required=True)
-    skill2=ndb.TextProperty(required=True)
-    skill3=ndb.TextProperty(required=True)
-    skill4=ndb.TextProperty(required=True)
-    java=ndb.StringProperty(required=False)
-    Python=ndb.StringProperty(required=False)
-    HTML=ndb.StringProperty(required=False)
-    Javascript=ndb.StringProperty(required=False)
-    CSS=ndb.StringProperty(required=False)
-    Cplus=ndb.StringProperty(required=False)
-    Objective_C=ndb.StringProperty(required=False)
-    ruby =ndb.StringProperty(required=False)
+    password = ndb.StringProperty(required=True)
+    school = ndb.StringProperty(required=True)
+    schoolyear = ndb.StringProperty(required=False)
+    skill1 = ndb.TextProperty(required=True)
+    skill2 = ndb.TextProperty(required=True)
+    skill3 = ndb.TextProperty(required=True)
+    skill4 = ndb.TextProperty(required=True)
+    java = ndb.StringProperty(required=False)
+    Python = ndb.StringProperty(required=False)
+    HTML = ndb.StringProperty(required=False)
+    Javascript = ndb.StringProperty(required=False)
+    CSS = ndb.StringProperty(required=False)
+    Cplus = ndb.StringProperty(required=False)
+    Objective_C = ndb.StringProperty(required=False)
+    ruby = ndb.StringProperty(required=False)
+    otherlang = ndb.StringProperty(required=True)
     ID = ndb.StringProperty(required=True)
-
+    profilepic =ndb.BlobProperty(required=True)
     # language= ndb.StringProperty(required=True)
-
-
 
 jinja_environment = jinja2.Environment(
   loader=jinja2.FileSystemLoader(os.path.dirname(__file__))
@@ -43,17 +42,13 @@ class FormHandler(webapp2.RequestHandler):
         schoolyear = self.request.get("schoolyear"," ")
         name = self.request.get("name"," ")
         school = self.request.get("school"," ")
-
-
         response_string = ' '
-
         template = jinja_environment.get_template('form.html')
-
         template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
         self.response.out.write(template.render(template_vars))
 
     def post(self):
-
+        profilepic = self.request.get('pic')
         name = self.request.get('name')
         password = self.request.get('password')
         school = self.request.get('school')
@@ -70,17 +65,18 @@ class FormHandler(webapp2.RequestHandler):
         Cplus=self.request.get('Cplus')
         Objective_C=self.request.get('Objective_C')
         ruby = self.request.get('ruby')
+        user = users.get_current_user()
+        otherlang = self.request.get('otherLang')
+
+
 
         # skill = self.request.get('skill')
         # activity = self.request.get('activity')
 
-        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id());
-        student.put()
+        student=Student(name=name,password=password,school=school,schoolyear=schoolyear,skill1=skill1,skill2=skill2,skill3=skill3,skill4=skill4,java=java,Python=Python,HTML=HTML,Javascript=Javascript,CSS=CSS, Cplus=Cplus,Objective_C=Objective_C,ruby=ruby,ID=users.get_current_user().user_id(),
+        profilepic=profilepic);
 
-        java = self.request.get('java')
-        Python = self.request.get('Python')
-        HTML = self.request.get('HTML')
-        Javascript = self.request.get('Javascript')
+        student.put()
 
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
@@ -98,14 +94,9 @@ class FormHandler(webapp2.RequestHandler):
             if language != "":
                 code.append(language)
 
-
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
-
-
-
         template = jinja_environment.get_template('form.html')
-
         template_vars = {'name':name, 'schoolyear': schoolyear}
         self.response.out.write(template.render(template_vars))
         self.redirect('/profile')
@@ -115,6 +106,7 @@ class MainHandler(webapp2.RequestHandler):
     Stuff = [i.split() for i in globvar]
     newvar =  Stuff
     def get(self):
+
         # user = users.get_current_user()
         newvar = code
         # if user:
@@ -125,32 +117,13 @@ class MainHandler(webapp2.RequestHandler):
         # self.response.out.write('%s'% greeting)
         template_vars = {'newvar': newvar}
         self.response.out.write(template.render(template_vars))
-
-
-
         # self.response.write(globvar)
 
-        # # Get all of the student data from the datastore
-        # student_query = Student.query()
-        # student_query = student_query.order(Student.name)
-        # # student_query = student_query.filter(Student.name == 'Adam')
-        # student_data = student_query.fetch()
-        # # Pass the data to the template
-        # template_values = {
-        #     'students' : student_data
-        # }
-        # template = JINJA_ENVIRONMENT.get_template('index.html')
-        # self.response.write(template.render(template_values))
     def post(self):
-        # Get the student name and university from the form
+        avatar = self.request.get('pic')
+        student.avatar= avatar
         name = self.request.get('name')
         story_input = self.request.get('story_input')
-        # lunchbox_instance = LunchBox(
-        # food = self.request.get('food'),
-        # drink = self.request.get('drink'),
-        # insulated = True)
-        # my_lunchbox_key = lunchbox_instance.put()
-        # Create a new Student and put it in the datastore
 
         # Redirect to the main handler that will render the template
         self.redirect('/profile')
@@ -196,8 +169,6 @@ class WelcomepageHandler(webapp2.RequestHandler):
         #         self.redirect('/profile')
         #     else:
         #         self.redirect('/form')
-
-
             # user_query = UserPrefs.query()
             # user_query = user_query.filter(UserPrefs.userid == user.user_id())
             # user_data = user_query.get()
@@ -247,11 +218,6 @@ class WelcomepageHandler(webapp2.RequestHandler):
         #     else:
         #         store_user.append(user)
         #         store_pass.append(password)
-        #
-        #
-        #
-        #
-        #
         #     print "Welcome,",user, ". Type Lock to Lock or Type Create to create another user."
         #     print store_user
         #     print store_pass
@@ -259,10 +225,12 @@ class WelcomepageHandler(webapp2.RequestHandler):
         #     while key != "lock":
         #         key = raw_input("")
         self.redirect('/form')
+
 class ReferenceHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('references.html')
         self.response.out.write(template.render())
+
 class DevTeamHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('devteam.html')
