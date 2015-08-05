@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Cassidy Haas's Profile</title>
-      <link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'>
-      <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-  </head>
-  <body>
-    <!-- nav bar- My profile, messages, connections, search, dev team, coding references -->
-    <nav>
-  <ul>
-    <li class="header" id="logo">.sharkspace</li>
-    <li class="header">
-        <a href="/profile">My Profile</a>
-    </li>
-    <li class="header">
-        <a href="/devteam">Dev Team</a>
-    </li>
-    <li class="header">
-        <a href="/references">Coding Resources</a>
-    </li>
-    <li class="header">
-        <a href="/contacts">Contacts</a>
-    </li>
-  </ul><br>
+<head>
+  <title>cassidy's Profile</title>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'> -->
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <!--<script src="script.js"></script> -->
+</head>
+<body>
+  <nav class="navbar navbar-default">
+<ul class="nav navbar-nav">
+  <li class="header" id="logo">.sharkspace</li>
+  <li class="header">
+      <a href="/profile">My Profile</a>
+  </li>
+  <li class="header">
+      <a href="/devteam">Dev Team</a>
+  </li>
+  <li class="header">
+      <a href="/references">Coding Resources</a>
+  </li>
+  <li class="header">
+      <a href="/contacts">Contacts</a>
+  </li>
+</ul><br>
 </nav>
+<<<<<<< HEAD
     <div id="main">
      {{profilepic}} 
     <!-- float left- use a div tag to inline block with the users name -->
@@ -32,15 +33,44 @@
       <h1 class="name_and_image" id="name">Cassidy Haas</h1><br>
     <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
     <br>
-      {{numero}}
+      <!-- {{numero}}
       {{schoolname}}
       {{year}}
     <ul>
 
     {% for g in globvar%}
   <li>{{g}}</li>
-  {% endfor %}
+  {% endfor %} -->
+  Hiii
+
+
+{{students}}
+
+
+  heloo
 </ul>
   </div>
   </body>
+=======
+
+  <div id="main">
+  <img src="{{profilepic}}" id="profile_image" class="name_and_image">
+
+
+
+    <h1 class="name_and_image" id="name">Cassidy</h1><br>
+  <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
+  <br>
+School:{{school}}<br>
+
+Language:<br>
+
+Skills:<br>
+
+Activities:<br>
+
+</div>
+
+</body>
+>>>>>>> ac3b2819f3067bf6e4b93892b3dbfa4feb1ae750
 </html>
