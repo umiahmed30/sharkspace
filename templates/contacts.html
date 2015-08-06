@@ -26,7 +26,7 @@
   <div id="main">
   <h3>Contacts: </h3><br>
   {% for students in student%}
-    {{students.name}}<br>
+    <a href="/profile?user1={{students.name}}">{{students.name}}</a>
   {%endfor%}
 </div></body>
 </html>

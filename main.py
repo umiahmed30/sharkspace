@@ -93,12 +93,11 @@ class FormHandler(webapp2.RequestHandler):
         self.redirect('/submit')
 
 class MainHandler(webapp2.RequestHandler):
-    globvar = []
-    Stuff = [i.split() for i in globvar]
-    newvar =  Stuff
+
 
     def get(self):
         user = users.get_current_user()
+        name = self.request.get('user1')
         if user:
             greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
                         (user.nickname(), users.create_logout_url('/')))
@@ -114,7 +113,7 @@ class MainHandler(webapp2.RequestHandler):
 
         student_query = Student.query()
         student_query = student_query.order(Student.name)
-        student_query = student_query.filter(Student.user == user )
+        student_query = student_query.filter(Student.name == name )
         student_data = student_query.fetch()
         logging.info(student_data)
 
@@ -174,8 +173,11 @@ class SignInHandler(webapp2.RequestHandler):
                         (user.nickname(), users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
+            n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            username = n.get()
             if userprefs:
-                self.redirect('/profile')
+                print 'userprefs'
+                self.redirect('/profile?user1='+ username.name)
             else:
                 self.redirect('/signup')
         else:
@@ -196,9 +198,11 @@ class WelcomepageHandler(webapp2.RequestHandler):
             greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s!(<a href="%s"style= "color:goldenrod;">sign out</a>)</strong></p>'%(user.nickname(),users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
+            n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            username = n.get()
             if userprefs:
                 print 'userprefs'
-                self.redirect('/profile')
+                self.redirect('/profile?user1='+ username.name)
             else:
                 print 'no userprefs'
                 self.redirect('/signup')
@@ -244,8 +248,18 @@ class DevTeamHandler(webapp2.RequestHandler):
         self.response.out.write(template.render())
 class SubmitHandler(webapp2.RequestHandler):
     def get(self):
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        # student_query = student_query.filter(Student.user == user )
+        student_data = student_query.fetch()
+        logging.info(student_data)
+
+            # Pass the data to the template
+        template_values = {
+            'student' : student_data
+        }
         template = jinja_environment.get_template('templates/submit.html')
-        self.response.out.write(template.render())
+        self.response.out.write(template.render(template_values))
 class ContactsHandler(webapp2.RequestHandler):
     def get(self):
         user = users.get_current_user()
