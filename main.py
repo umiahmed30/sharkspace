@@ -259,8 +259,23 @@ class ContactsHandler(webapp2.RequestHandler):
                         users.create_login_url('/'))
         # template = jinja_environment.get_template('index.html')
         self.response.out.write("<html><body>%s</body></html>" % greeting)
+
+
+
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        # student_query = student_query.filter(Student.user == user )
+        student_data = student_query.fetch()
+        logging.info(student_data)
+
+            # Pass the data to the template
+        template_values = {
+            'student' : student_data
+        }
+
+
         template = jinja_environment.get_template('templates/contacts.html')
-        self.response.out.write(template.render())
+        self.response.out.write(template.render(template_values))
 
 
 
