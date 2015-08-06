@@ -12,13 +12,9 @@ handlers:
   static_files: style.css
   upload: style\.css
 
-
-
-
 - url: .*
   script: main.app
-- url: /_ah/login_required
-  script: do_openid_login.app
+
 
 libraries:
 - name: webapp2
