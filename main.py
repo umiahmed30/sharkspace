@@ -34,7 +34,7 @@ class Student(ndb.Model):
     otherlang = ndb.StringProperty(required=False)
     ID = ndb.StringProperty(required=True)
 
-    profilepic =ndb.BlobProperty(required=False)
+    # profilepic =ndb.LinkProperty(required=False)
 
     user = ndb.UserProperty(required=True)
 
@@ -59,7 +59,7 @@ class FormHandler(webapp2.RequestHandler):
 
 
         response_string = ' '
-        template = jinja_environment.get_template('form.html')
+        template = jinja_environment.get_template('templates/form.html')
 
         # template_vars = {'name':name, 'schoolyear': schoolyear, 'response': response_string}
         # self.response.out.write(template.render(template_vars))
@@ -69,7 +69,7 @@ class FormHandler(webapp2.RequestHandler):
 
 
     def post(self):
-        profilepic = self.request.get('pic')
+        # profilepic = self.request.get('profilepic')
         name = self.request.get('name')
         password = self.request.get('password')
         school = self.request.get('school')
@@ -107,7 +107,7 @@ class FormHandler(webapp2.RequestHandler):
 
         # response_string = "Hi " + name + "You are a " + schoolyear + "." + " You can code " +  java + " "+ python + " "+ HTML+ " "+ Javascript + " "+CSS + " "+Cplus + " "+Objective_C + " "+ruby
 
-        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user(), profilepic=profilepic, otherlang=otherlang );
+        student=Student(name=name, password=password, school=school, schoolyear=schoolyear, skill1=skill1, skill2=skill2, skill3=skill3, skill4=skill4, java=java, Python=Python, HTML=HTML, Javascript=Javascript, CSS=CSS, Cplus=Cplus, Objective_C=Objective_C, ruby=ruby, ID=users.get_current_user().user_id(), user =users.get_current_user(), otherlang=otherlang );
         student.put()
 
         # java = self.request.get('java')
@@ -169,7 +169,7 @@ class MainHandler(webapp2.RequestHandler):
         template_values = {
             'student' : student_data[0]
         }
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/index.html')
         self.response.write(template.render(template_values))
         # self.response.write(globvar)
 
@@ -212,7 +212,7 @@ class MainHandler(webapp2.RequestHandler):
         template_values = {
             'students' : student_data
         }
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template = JINJA_ENVIRONMENT.get_template('templates/index.html')
         self.response.write(template.render(template_values))
     # def post(self):
     #     # Get the student name and university from the form
@@ -299,7 +299,7 @@ class WelcomepageHandler(webapp2.RequestHandler):
             greeting = ('<a href="%s" style="color:goldenrod;">Sign in or Register</a>.'% users.create_login_url('/redirect'))
 
 
-        template = jinja_environment.get_template('welcomepage.html')
+        template = jinja_environment.get_template('templates/welcomepage.html')
         self.response.out.write('%s'% greeting)
         self.response.out.write(template.render())
 
@@ -384,7 +384,7 @@ class ReferenceHandler(webapp2.RequestHandler):
                         users.create_login_url('/'))
         # template = jinja_environment.get_template('index.html')
         self.response.out.write("<html><body>%s</body></html>" % greeting)
-        template = jinja_environment.get_template('references.html')
+        template = jinja_environment.get_template('templates/references.html')
         self.response.out.write(template.render())
 
 class DevTeamHandler(webapp2.RequestHandler):
@@ -400,11 +400,11 @@ class DevTeamHandler(webapp2.RequestHandler):
                         users.create_login_url('/'))
         # template = jinja_environment.get_template('index.html')
         self.response.out.write("<html><body>%s</body></html>" % greeting)
-        template = jinja_environment.get_template('devteam.html')
+        template = jinja_environment.get_template('templates/devteam.html')
         self.response.out.write(template.render())
 class SubmitHandler(webapp2.RequestHandler):
     def get(self):
-        template = jinja_environment.get_template('submit.html')
+        template = jinja_environment.get_template('templates/submit.html')
         self.response.out.write(template.render())
 
 
