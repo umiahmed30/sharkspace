@@ -8,9 +8,7 @@
   <nav class="navbar navbar-default">
 <ul class="nav navbar-nav">
   <li class="header" id="logo">.sharkspace</li>
-  <li class="header">
-      <a href="/profile">My Profile</a>
-  </li>
+
   <li class="header">
       <a href="/devteam">Dev Team</a>
   </li>
@@ -23,22 +21,17 @@
 </ul><br>
 </nav>
 <div>
-<h1>Customize my Profile</h1>
+<h1>Create a Profile</h1>
 
 
 
 <form action="/signup" method ='post'>
-  Upload a profile image:
-  <br>
-  <br>
 
 
-</form>
-
-<form action="/signup" method="post">
   Your Name: <input type="text" name="name">
-  <!-- <input type="text" name="profilepic"> -->
   <br>
+  Profile Picture url:
+  <input type="text" name="pic" value=""><br>
   <p> My College/ University: <input type="text" name ="school"> </p>
   <p> Year in School:
 
@@ -48,6 +41,8 @@
     <input type="radio" name="schoolyear" value="Senior"> Senior
 
   </p>
+  Github username:<input type="text" name="github" value="">
+  Contact Email: <input type="text" name="email" value="">
   <p>  Language(s)  : </p>
     <input type="checkbox" name="java" value="java"> Java
     <br>
@@ -65,23 +60,24 @@
     <br>
     <input type="checkbox" name="ruby" value='ruby'>Ruby
    <br>
-   Other:<input type="text" name="otherlang">
+   Other:<input type="text" name="otherlang" value="">
   <p> Technical Skills </p>
-  Skill 1: <input type="text" name="skill1" value="skill1">
+  Skill: <input type="text" name="skill1" value="">
   <br>
-  Skill 2: <input type="text" name="skill2" value="skill2">
+  Skill: <input type="text" name="skill2" value="">
   <br>
-  Skill 3: <input type="text" name="skill3" value="skill3">
+  Skill: <input type="text" name="skill3" value="">
   <br>
-  Skill 4: <input type="text" name="skill4" value="skill4">
+  Skill: <input type="text" name="skill4" value="">
   <br>
 
   <p> Experience </p>
-  Activity 1:
+  Hackathons, Internships, etc:
   <br>
-  Title
-  <input type="type" name="activity" value="activity1">
-
+  <input type="type" name="activity" value="">
+  <br>
+<p> Short Bio: </p>
+  <input type="text" name="bio" value="" id="bio">
   <br>
   <br>
     <input type="submit">

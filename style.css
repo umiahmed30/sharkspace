@@ -18,8 +18,13 @@ html {
 }
 
 #profile_image {
-  height:200px;
+  height:auto;
   width:200px;
+}
+
+#devimg {
+  width:400px;
+  height:auto;
 }
 
 .name_and_image {
@@ -28,6 +33,11 @@ html {
   font-size:50px;
   text-align:center;
 
+}
+
+#bio {
+  width: 600px;
+  height:400px;
 }
 
 img{

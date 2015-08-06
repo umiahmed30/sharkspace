@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>cassidy's Profile</title>
+  <title>{{student.name}}'s Profile</title>
     <link href='http://fonts.googleapis.com/css?family=Crimson+Text' rel='stylesheet' type='text/css'>
   <link href="style.css" rel="stylesheet" type="text/css">
   <!--<script src="script.js"></script> -->
@@ -26,29 +26,36 @@
 </nav>
     <div id="main">
 
-
-
-  <h1 class="name_and_image" id="name">Cassidy Haas</h1><br>
-  <a href="https://github.com/cassidyhhaas" id="github">My Github</a>
-  <br>
-
-  {{student.name}}<br>
-  {{student.school}}<br>
-  {{student.schoolyear}}<br>
-  {{student.skill1}}<br>
-  {{student.skill2}}<br>
-  {{student.skill3}}<br>
-  {{student.skill4}}<br>
-  {{student.java}}<br>
-  {{student.Python}}
-  {{student.HTML}}
-  {{student.Javascript}}
-  {{student.Cplus}}
-  {{student.Objective_C}}
-  {{student.ruby}}
-  {{student.CSS}}
-  {{student.otherlang}}
-  {{student.profilepic}}
+  <h1 class="name_and_image" id="name">{{student.name}}</h1><br>
+  <img id="profile_image" src={{student.pic}}>
+  <h3>Bio: </h3>{{student.bio}}
+  <h3>Contact me:</h3>
+  <a href="https://github.com/{{student.github}}">Github</a><br>
+  Email: {{student.email}}
+  <h3>Education:</h3>{{student.school}}- {{student.schoolyear}}<br>
+  <h3>Coding Languages:</h3>
+  <ul>
+  <li>{{student.Python}}</li>
+  <li>{{student.HTML}}</li>
+  <li>{{student.Javascript}}</li>
+  <li>{{student.Cplus}}</li>
+  <li>{{student.Objective_C}}</li>
+  <li>{{student.ruby}}</li>
+  <li>{{student.CSS}}</li>
+  <li>{{student.java}}</li>
+  <li>{{student.otherlang}}</li>
+</ul>
+  <h3>Technical Skills:</h3>
+  <ul>
+  <li>{{student.skill1}}</li>
+  <li>{{student.skill2}}</li>
+  <li>{{student.skill3}}</li>
+  <li>{{student.skill4}}</li>
+</ul>
+  <h3>Technical Experience:</h3>
+  <ul>
+    <li>{{student.activity}}</li>
+  </ul>
 
 
 </div>
