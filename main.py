@@ -97,7 +97,7 @@ class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         user = users.get_current_user()
-        name = self.request.get('user1')
+        # name = self.request.get('user1')
         if user:
             greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
                         (user.nickname(), users.create_logout_url('/')))
@@ -113,7 +113,7 @@ class MainHandler(webapp2.RequestHandler):
 
         student_query = Student.query()
         student_query = student_query.order(Student.name)
-        student_query = student_query.filter(Student.name == name )
+        student_query = student_query.filter(Student.user == user )
         student_data = student_query.fetch()
         logging.info(student_data)
 
@@ -173,11 +173,12 @@ class SignInHandler(webapp2.RequestHandler):
                         (user.nickname(), users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
-            n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
-            username = n.get()
+            # n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            # username = n.get()
             if userprefs:
                 print 'userprefs'
-                self.redirect('/profile?user1='+ username.name)
+                # self.redirect('/profile?user1='+ username.name)
+                self.redirect('/profile')
             else:
                 self.redirect('/signup')
         else:
@@ -198,11 +199,12 @@ class WelcomepageHandler(webapp2.RequestHandler):
             greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s!(<a href="%s"style= "color:goldenrod;">sign out</a>)</strong></p>'%(user.nickname(),users.create_logout_url('/')))
             q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
             userprefs = q.get()
-            n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
-            username = n.get()
+            # n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            # username = n.get()
             if userprefs:
                 print 'userprefs'
-                self.redirect('/profile?user1='+ username.name)
+                # self.redirect('/profile?user1='+ username.name)
+                self.redirect('/profile')
             else:
                 print 'no userprefs'
                 self.redirect('/signup')
@@ -291,7 +293,38 @@ class ContactsHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('templates/contacts.html')
         self.response.out.write(template.render(template_values))
 
+class ElseProfileHandler(webapp2.RequestHandler):
 
+
+    def get(self):
+        user = users.get_current_user()
+        name = self.request.get('user1')
+        if user:
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s! (<a href="%s"style="color:goldenrod;">sign out</a>)</strong></p>' %
+                        (user.nickname(), users.create_logout_url('/')))
+
+        else:
+            greeting = ('<p style="color:goldenrod;"><strong><a href="%s">Sign in or register</a>.</strong></p>' %
+                        users.create_login_url('/'))
+        # template = jinja_environment.get_template('index.html')
+        self.response.out.write("<html><body>%s</body></html>" % greeting)
+
+
+
+        student_query = Student.query()
+        student_query = student_query.order(Student.name)
+        student_query = student_query.filter(Student.name == name )
+        student_data = student_query.fetch()
+        logging.info(student_data)
+
+        # Pass the data to the template
+        template_values = {
+            'student' : student_data[0]
+        }
+        if name == Student.name:
+
+            template = JINJA_ENVIRONMENT.get_template('templates/index.html')
+            self.response.write(template.render(template_values))
 
 
 
@@ -304,5 +337,6 @@ app = webapp2.WSGIApplication([
     ('/references', ReferenceHandler),
     ('/devteam', DevTeamHandler),
     ('/submit', SubmitHandler),
-    ('/contacts', ContactsHandler)
+    ('/contacts', ContactsHandler),
+    ('/elseprofile', ElseProfileHandler)
 ], debug=True)
