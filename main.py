@@ -326,7 +326,26 @@ class ElseProfileHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('templates/index.html')
             self.response.write(template.render(template_values))
 
+class IntroPageHandler(webapp2.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
 
+        if user:
+            print "logged in"
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s!(<a href="%s"style= "color:goldenrod;">sign out</a>)</strong></p>'%(user.nickname(),users.create_logout_url('/')))
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+            # n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            # username = n.get()
+            
+        else:
+            print "not logged in"
+            greeting = ('<a href="%s" style="color:goldenrod;">Sign in or Register</a>.'% users.create_login_url('/redirect'))
+
+
+        template = jinja_environment.get_template('templates/welcomepage.html')
+        self.response.out.write('%s'% greeting)
+        self.response.out.write(template.render())
 
 
 app = webapp2.WSGIApplication([
@@ -338,5 +357,6 @@ app = webapp2.WSGIApplication([
     ('/devteam', DevTeamHandler),
     ('/submit', SubmitHandler),
     ('/contacts', ContactsHandler),
-    ('/elseprofile', ElseProfileHandler)
+    ('/elseprofile', ElseProfileHandler),
+    ('/intro', IntroPageHandler)
 ], debug=True)
