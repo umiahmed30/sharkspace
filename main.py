@@ -337,7 +337,10 @@ class IntroPageHandler(webapp2.RequestHandler):
             userprefs = q.get()
             # n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
             # username = n.get()
-            
+            if userprefs:
+                print 'userprefs'
+                # self.redirect('/profile?user1='+ username.name)
+                self.redirect('/intro2')
         else:
             print "not logged in"
             greeting = ('<a href="%s" style="color:goldenrod;">Sign in or Register</a>.'% users.create_login_url('/redirect'))
@@ -346,7 +349,25 @@ class IntroPageHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('templates/welcomepage.html')
         self.response.out.write('%s'% greeting)
         self.response.out.write(template.render())
+class Intro2PageHandler(webapp2.RequestHandler):
+    def get(self):
+        user = users.get_current_user()
 
+        if user:
+            print "logged in"
+            greeting = ('<p style="color:goldenrod;"><strong>Welcome, %s!(<a href="%s"style= "color:goldenrod;">sign out</a>)</strong></p>'%(user.nickname(),users.create_logout_url('/')))
+            q = ndb.gql("SELECT * FROM Student WHERE ID = :1", user.user_id())
+            userprefs = q.get()
+            # n = ndb.gql("SELECT name FROM Student WHERE ID = :1", user.user_id())
+            # username = n.get()
+        else:
+            print "not logged in"
+            greeting = ('<a href="%s" style="color:goldenrod;">Sign in or Register</a>.'% users.create_login_url('/redirect'))
+
+
+        template = jinja_environment.get_template('templates/intro2.html')
+        self.response.out.write('%s'% greeting)
+        self.response.out.write(template.render())
 
 app = webapp2.WSGIApplication([
     ('/', WelcomepageHandler),
@@ -358,5 +379,6 @@ app = webapp2.WSGIApplication([
     ('/submit', SubmitHandler),
     ('/contacts', ContactsHandler),
     ('/elseprofile', ElseProfileHandler),
-    ('/intro', IntroPageHandler)
+    ('/intro', IntroPageHandler),
+    ('/intro2', Intro2PageHandler)
 ], debug=True)
